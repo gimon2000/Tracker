@@ -8,5 +8,5 @@
 import UIKit
 
 extension UIColor {
-    static var ypBlue: UIColor{ UIColor(named: "Blue") ?? .blue }
+    static var ypBlue: UIColor{ UIColor(named: "YPColorBlue") ?? .blue }
 }
