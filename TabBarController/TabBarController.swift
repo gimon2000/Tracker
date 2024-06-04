@@ -10,9 +10,11 @@ import UIKit
 final class TabBarController: UITabBarController {
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
+        print(#fileID, #function, #line)
         
         let trackersViewController = TrackersViewController()
-        trackersViewController.tabBarItem = UITabBarItem(
+        let navigationController = UINavigationController(rootViewController: trackersViewController)
+        navigationController.tabBarItem = UITabBarItem(
             title: "Трекеры",
             image: UIImage(named: "TrackersImage"),
             selectedImage: nil
@@ -24,8 +26,7 @@ final class TabBarController: UITabBarController {
             image: UIImage(named: "StatisticImage"),
             selectedImage: nil
         )
-        self.tabBar.backgroundColor = .white
         self.tabBar.tintColor = .ypBlue
-        self.viewControllers = [trackersViewController, statisticViewController]
+        self.viewControllers = [navigationController, statisticViewController]
     }
 }
