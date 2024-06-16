@@ -28,7 +28,7 @@ final class TrackersViewController: UIViewController {
         let view = UILabel()
         view.text = "Трекеры"
         view.textColor = .ypBlack
-        view.font = UIFont(name: "HelveticaNeue-Bold", size: 34)
+        view.font = UIFont.boldSystemFont(ofSize: 34)
         return view
     }()
     
@@ -48,6 +48,11 @@ final class TrackersViewController: UIViewController {
         view.font = UIFont(name: "HelveticaNeue-Medium", size: 12)
         return view
     }()
+    
+    //MARK: - Private Property
+    
+    private var categories: [TrackerCategory]?
+    private var completedTrackers: [TrackerRecord]?
     
     //MARK: - Public Methods
     override func viewDidLoad() {
