@@ -10,15 +10,15 @@ import UIKit
 final class TrackersViewController: UIViewController {
     
     //MARK: - Visual Components
-    private var addNewTracker: UIButton = {
+    private lazy var addNewTracker: UIButton = {
         guard let image = UIImage(named: "AddTracker") else {
             print(#fileID, #function, #line)
             return UIButton()
         }
         let view = UIButton.systemButton(
             with: image,
-            target: nil,
-            action: nil
+            target: self,
+            action: nil //TODO: добавить реализацию
         )
         view.tintColor = .ypBlack
         return view
@@ -49,10 +49,32 @@ final class TrackersViewController: UIViewController {
         return view
     }()
     
+    private lazy var datePicker: UIDatePicker = {
+        let picker = UIDatePicker()
+        picker.datePickerMode = .date
+        picker.preferredDatePickerStyle = .compact
+        picker.locale = Locale(identifier: "ru_Ru")
+        picker.translatesAutoresizingMaskIntoConstraints = false
+        picker.widthAnchor.constraint(equalToConstant: 100).isActive = true
+        picker.calendar.firstWeekday = 2
+        picker.addTarget(
+            self,
+            action: #selector(datePickerValueChanged(_:)),
+            for: .valueChanged
+        )
+        return picker
+    }()
+    
+    private var searchTextField : UISearchTextField = {
+        let viewSearchTextField = UISearchTextField()
+        viewSearchTextField.text = "Поиск"
+        return viewSearchTextField
+    }()
+    
     //MARK: - Private Property
     
-    private var categories: [TrackerCategory]?
-    private var completedTrackers: [TrackerRecord]?
+    //    private var categories: [TrackerCategory]?
+    //    private var completedTrackers: [TrackerRecord]?
     
     //MARK: - Public Methods
     override func viewDidLoad() {
@@ -62,17 +84,20 @@ final class TrackersViewController: UIViewController {
         view.backgroundColor = .white
         
         navigationItem.leftBarButtonItem = UIBarButtonItem(customView: addNewTracker)
+        navigationItem.rightBarButtonItem = UIBarButtonItem(customView: datePicker)
         
         [
             emptyTrackersImage,
             emptyTrackersLabel,
-            header
+            header,
+            searchTextField
         ].forEach{
             $0.translatesAutoresizingMaskIntoConstraints = false
             view.addSubview($0)
         }
         
         addConstraintHeader()
+        addConstraintSearchTextField()
         addConstraintEmptyTrackersImage()
         addConstraintEmptyTrackersLabel()
     }
@@ -99,5 +124,24 @@ final class TrackersViewController: UIViewController {
             emptyTrackersLabel.topAnchor.constraint(equalTo: emptyTrackersImage.bottomAnchor, constant: 8),
             emptyTrackersLabel.centerXAnchor.constraint(equalTo: view.safeAreaLayoutGuide.centerXAnchor)
         ])
+    }
+    
+    private func addConstraintSearchTextField() {
+        NSLayoutConstraint.activate([
+            searchTextField.heightAnchor.constraint(equalToConstant: 36),
+            searchTextField.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor, constant: 16),
+            searchTextField.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor, constant: -16),
+            searchTextField.topAnchor.constraint(equalTo: header.bottomAnchor, constant: 7)
+        ])
+    }
+    
+    //TODO: добавить реализацию
+    @objc private func datePickerValueChanged(_ sender: UIDatePicker) {
+        print(#fileID, #function, #line, sender)
+        let selectedDate = sender.date
+        let dateFormatter = DateFormatter()
+        dateFormatter.dateFormat = "dd.MM.yyyy"
+        let formattedDate = dateFormatter.string(from: selectedDate)
+        print("Выбранная дата: \(formattedDate)")
     }
 }
