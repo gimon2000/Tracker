@@ -18,7 +18,7 @@ final class TrackersViewController: UIViewController {
         let view = UIButton.systemButton(
             with: image,
             target: self,
-            action: nil //TODO: добавить реализацию
+            action: #selector(clickAddNewTracker)
         )
         view.tintColor = .ypBlack
         return view
@@ -45,7 +45,7 @@ final class TrackersViewController: UIViewController {
         let view = UILabel()
         view.text = "Что будем отслеживать?"
         view.textColor = .ypBlack
-        view.font = UIFont(name: "HelveticaNeue-Medium", size: 12)
+        view.font = UIFont.systemFont(ofSize: 12, weight: .medium)
         return view
     }()
     
@@ -143,5 +143,11 @@ final class TrackersViewController: UIViewController {
         dateFormatter.dateFormat = "dd.MM.yyyy"
         let formattedDate = dateFormatter.string(from: selectedDate)
         print("Выбранная дата: \(formattedDate)")
+    }
+    
+    @objc private func clickAddNewTracker() {
+        let selectTypeEventViewController = SelectTypeEventViewController()
+        let navigationController = UINavigationController(rootViewController: selectTypeEventViewController)
+        present(navigationController, animated: true)
     }
 }
